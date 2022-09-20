@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+
+    <title>{% block title %}ATX Plastering {% endblock%}| Pool resurfacing experts</title>
+    <meta name="description" content="We work hard to develop long lasting relationships with our customers and be the ‘go-to’ service provider for swimming pool remodeling.">
+    <meta name="keywords" content="">
+
+    <link rel="preload" href="/fonts/Open-sans/OpenSans-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+    <script>
+      var docElement = document.documentElement;
+      docElement.className = docElement.className.replace(/\bno-js\b/, '') + ' js';
+    </script>
+
+    {# Favicon #}
+
+    {# Share #}
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <!-- build:css -->
+    <link href="css/style.min.css" rel="stylesheet">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <div class="wrapper">
+    {% include "templates/header.jinja" %}
+      <main class="content">
+        {% import "templates/utils/macros.jinja" as macros with context %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <script src="js/app.js" defer></script>
+  </body>
+</html>

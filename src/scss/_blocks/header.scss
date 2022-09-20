@@ -1,0 +1,122 @@
+.header {
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  @media (min-width: $media-tablet-landscape) {
+    padding-top: 24px;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (min-width: $media-tablet-landscape) {
+      margin-bottom: 24px;
+    }
+  }
+
+  &__burger {
+    position: relative;
+    width: 32px;
+    height: 32px;
+
+    @media (min-width: $media-tablet-landscape) {
+      display: none;
+    }
+  }
+
+  &__burger-line{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $color-text_dark-gray;
+    width: 20px;
+    height: 2px;
+    transition: background-color 0.4s ease-in-out;
+
+    &::before,
+    &::after {
+      background-color: $color-text_dark-gray;
+      content: "";
+      display: block;
+      position: absolute;
+      width: 20px;
+      height: 2px;
+      transition:
+        transform 0.4s ease-in-out,
+        top 0.4s ease-in-out,
+        bottom 0.4s ease-in-out;
+    }
+
+    &::before {
+      top: -6px;
+    }
+
+    &::after {
+      top: 6px;
+    }
+
+    .mobile-menu--open & {
+      background-color: transparent;
+
+      &::before {
+        top: 50%;
+        bottom: auto;
+        transform: rotate(225deg);
+      }
+
+      &::after {
+        top: 50%;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  &__logo {
+    text-decoration: none;
+  }
+
+  &__list {
+    @include no-list;
+
+    display: none;
+
+    @media (min-width: $media-tablet-landscape) {
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 30px;
+      overflow: visible;
+    }
+  }
+
+  &__item {
+    color: $color-text_dark-gray;
+    text-decoration: none;
+    padding: 2px 10px;
+    transition: background-color 0.4s ease-in-out;
+
+    &:hover {
+      background-color: $color-bg_white-smoke;
+      border-radius: 34px;
+    }
+  }
+
+  &__favorites {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    padding: 7px 4px;
+
+    &:hover {
+      background-color: $color-bg_white-smoke;
+      border-radius: 37px;
+    }
+  }
+
+  &__favorites-count {
+    color: $color-text_dark-gray;
+  }
+}

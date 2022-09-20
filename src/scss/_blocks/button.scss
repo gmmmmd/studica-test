@@ -1,0 +1,6 @@
+.button {
+  @include no-btn;
+
+  cursor: pointer;
+  display: block;
+}

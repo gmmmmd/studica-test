@@ -1,0 +1,13 @@
+{% macro svgSprite(id, bound='') %}
+  <svg{% if bound %} viewBox="{{ bound }}"{% endif %}>
+    <use xlink:href="#{{ id }}"></use>
+  </svg>{{ caller() }}
+{% endmacro %}
+
+{% macro includeComponent(component, mods=[], classes='', data={}, add={}) %}
+  {% if data.item %}
+    {% set item = data.item %}
+  {% endif %}
+
+  {% include component %}{{ caller() }}
+{% endmacro %}

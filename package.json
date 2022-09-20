@@ -1,0 +1,42 @@
+{
+  "name": "dl-education-wcs-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Education repository",
+  "author": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "build": "gulp build",
+    "start": "gulp serve",
+    "lint:editorconfig": "editorconfig-checker",
+    "lint:stylelint": "stylelint \"src/scss/**/*.{css,scss,sass}\"",
+    "test": "npm run lint:editorconfig && npm run lint:stylelint"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "browser-sync": "^2.27.7",
+    "browserify": "^17.0.0",
+    "cssnano": "^5.0.12",
+    "del": "^6.0.0",
+    "editorconfig-checker": "^4.0.2",
+    "gulp": "^4.0.2",
+    "gulp-data": "^1.3.1",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-nunjucks-html": "^2.0.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-svgo": "^2.2.1",
+    "gulp-svgstore": "^9.0.0",
+    "gulp-uglify": "^3.0.2",
+    "nunjucks": "^3.2.3",
+    "path": "^0.12.7",
+    "postcss": "^8.4.4",
+    "sass": "^1.44.0",
+    "stylelint": "^14.1.0",
+    "stylelint-config-standard": "^24.0.0",
+    "stylelint-scss": "^4.0.0"
+  },
+  "dependencies": {}
+}

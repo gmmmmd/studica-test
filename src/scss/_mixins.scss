@@ -1,0 +1,26 @@
+@mixin no-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@mixin no-btn {
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+@mixin clearfix {
+  &::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+}
+
+@mixin remFontSize($font-size) {
+  font-size: ($font-size / $font-base-size-unit) * 1rem;
+}

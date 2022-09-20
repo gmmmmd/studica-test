@@ -1,0 +1,34 @@
+/*
+  System font stack used as base sans-serif and monospace
+*/
+$font-serif-family:
+  system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica,
+  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-mono-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+/*
+  Themes fonts
+*/
+$font-base-family: Open-sans, $font-serif-family;
+$font-decorative-family: "Playfair Display", $font-serif-family;
+
+$font-base-size-unit: 14;
+$font-base-size: 14px;
+
+/*
+* Breakpoints
+*/
+
+$media-tablet: 768px;
+$media-tablet-landscape: 1024px;
+$media-desktop: 1200px;
+
+/*
+* Colors
+*/
+
+$color-bg_white: #fff;
+$color-bg_white-smoke: #f1f1f1;
+$color-bg_medium-light-gray: #a7a7a7;
+$color-text_dark-gray: #222;
+$color-text_gray: #767676;
