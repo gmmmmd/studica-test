@@ -1,0 +1,47 @@
+.location {
+  position: relative;
+
+  &__btn {
+    display: none;
+
+    @media (min-width: $media-tablet-landscape) {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      &:hover {
+        .location__icon {
+          border-radius: 50px;
+          background-color: $color-bg_white-smoke;
+        }
+      }
+    }
+  }
+
+  &__icon {
+    fill: none;
+    transition:
+      background-color 0.4s ease-in-out,
+      border-radius 0.4s ease-in-out;
+  }
+
+  &__search-container {
+    position: absolute;
+    width: 384px;
+    height: 300px;
+    background-color: #fbfbfb;
+    box-shadow: 0 7px 38px rgba(44, 62, 106, 0.25);
+    border-radius: 10px;
+    margin-top: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.4s ease-in-out,
+      visibility 0.4s ease-in-out;
+
+    &-open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

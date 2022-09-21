@@ -16,6 +16,12 @@
     }
   }
 
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
   &__burger {
     position: relative;
     width: 32px;
@@ -78,6 +84,8 @@
     text-decoration: none;
   }
 
+
+
   &__list {
     @include no-list;
 
@@ -108,7 +116,7 @@
     align-items: center;
     gap: 9px;
     text-decoration: none;
-    padding: 7px 4px;
+    padding: 6px 8px;
 
     &:hover {
       background-color: $color-bg_white-smoke;
