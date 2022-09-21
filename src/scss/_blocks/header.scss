@@ -18,8 +18,17 @@
 
   &__left {
     display: flex;
-    align-items: center;
     gap: 16px;
+  }
+
+  &__search-container {
+    display: none;
+
+    @media (min-width: $media-tablet-landscape) {
+      display: block;
+      max-width: 592px;
+      width: 100%;
+    }
   }
 
   &__burger {
@@ -105,9 +114,14 @@
     padding: 2px 10px;
     transition: background-color 0.4s ease-in-out;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: $color-bg_white-smoke;
       border-radius: 34px;
+    }
+
+    &:focus {
+      outline: none;
     }
   }
 
@@ -118,9 +132,14 @@
     text-decoration: none;
     padding: 6px 8px;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: $color-bg_white-smoke;
       border-radius: 37px;
+    }
+
+    &:focus {
+      outline: none;
     }
   }
 

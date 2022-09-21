@@ -1,0 +1,34 @@
+.search-form {
+  position: relative;
+  background-color: $color-bg_white-smoke;
+  border-radius: 100px;
+
+  &__search-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+  }
+
+  &__input {
+    background-color: $color-bg_white-smoke;
+    border-radius: 100px;
+    border: 2px solid none;
+    padding: 13px 8px 13px 48px;
+    width: 100%;
+    height: 100%;
+
+    &::placeholder {
+      text-align: center;
+    }
+
+    &:focus {
+      background-color: $color-bg_white;
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color_light-blue;
+    }
+  }
+}

@@ -9,20 +9,33 @@
       align-items: center;
       gap: 8px;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
+        border-radius: 50px;
+        background-color: $color-bg_white-smoke;
+
         .location__icon {
-          border-radius: 50px;
-          background-color: $color-bg_white-smoke;
+          stroke: none;
         }
+      }
+
+      &:focus {
+        outline: none;
       }
     }
   }
 
   &__icon {
     fill: none;
+    stroke: #a7a7a7;
+
     transition:
       background-color 0.4s ease-in-out,
       border-radius 0.4s ease-in-out;
+  }
+
+  &__value {
+    padding-right: 12px;
   }
 
   &__search-container {

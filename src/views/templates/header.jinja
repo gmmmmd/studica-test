@@ -15,13 +15,19 @@
             <svg class="location__icon" width="32" height="32" viewBox="0 0 32 32">
               <use xlink:href="/img/svg.svg#location-icon" />
             </svg>
-            <span>Любой регион</span>
+            <span class="location__value">Любой регион</span>
           </button>
           <div class="location__search-container js-location__search-container"></div>
         </div>
       </div>
-      <div>
-        <form>
+      <div class="header__search-container">
+        <form class="search-form">
+          <svg class="search-form__search-icon" width="17" height="17" viewBox="0 0 17 17">
+            <use xlink:href="/img/svg.svg#search-icon" />
+          </svg>
+          <label for="header_search">
+            <input type="text" id="header_search" class="search-form__input" placeholder="Учебное заведение, специальность или профессия">
+          </label>
         </form>
       </div>
       <div>
