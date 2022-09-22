@@ -1,0 +1,14 @@
+.location-search-form {
+  padding: 0 16px;
+  &__input {
+    background-color: $color-bg_white;
+    border-radius: 100px;
+    border: 2px solid $color_light-blue;
+    padding: 14px 25px 12px;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

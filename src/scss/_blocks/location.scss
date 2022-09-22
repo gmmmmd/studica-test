@@ -40,11 +40,12 @@
   &__search-container {
     position: absolute;
     width: 384px;
-    height: 300px;
     background-color: #fbfbfb;
     box-shadow: 0 7px 38px rgba(44 62 106 / 25%);
     border-radius: 10px;
     margin-top: 16px;
+    padding-top: 24px;
+    overflow: hidden;
     opacity: 0;
     visibility: hidden;
     transition:
@@ -55,5 +56,37 @@
       opacity: 1;
       visibility: visible;
     }
+  }
+
+  &__cities {
+    max-height: 200px;
+    overflow: hidden;
+    padding-top: 16px;
+  }
+
+  &__cities-data {
+    @include no-list;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__city {
+    padding: 9px 23px 10px;
+  }
+
+  &__btn-apply {
+    width: 100%;
+    color: $color-bg_medium-light-gray;
+    border-top: 1px solid #d8d8d8;
+    background-color: #fbfbfb;
+    display: flex;
+    justify-content: center;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
   }
 }

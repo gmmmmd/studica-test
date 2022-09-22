@@ -17,7 +17,21 @@
             </svg>
             <span class="location__value">Любой регион</span>
           </button>
-          <div class="location__search-container js-location__search-container"></div>
+          <div class="location__search-container js-location__search-container">
+            <form class="location-search-form" id="locationSearchForm">
+              <label for="header_search-location">
+                <input type="text" id="header_search-location" class="location-search-form__input" placeholder="Регион, город, населенный пункт">
+              </label>
+            </form>
+            <div class="location__cities">
+              <ul class="location__cities-data js-location__cities-data">
+              </ul>
+              {% include "templates/blocks/preloader.jinja" %}
+            </div>
+            <button type="button" class="button location__btn-apply">
+            Сохранить
+          </button>
+          </div>
         </div>
       </div>
       <div class="header__search-container">
