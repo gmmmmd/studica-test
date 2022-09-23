@@ -1,5 +1,10 @@
 .location {
   position: relative;
+  display: none;
+
+  @media (min-width: $media-tablet-landscape) {
+    display: block;
+  }
 
   &__btn {
     display: none;
@@ -52,16 +57,33 @@
       opacity 0.4s ease-in-out,
       visibility 0.4s ease-in-out;
 
-    &-open {
-      opacity: 1;
-      visibility: visible;
+    @media (min-width: $media-tablet-landscape) {
+      &-open {
+        opacity: 1;
+        visibility: visible;
+      }
     }
   }
 
   &__cities {
     max-height: 200px;
-    overflow: hidden;
-    padding-top: 16px;
+    overflow: scroll;
+    margin-top: 16px;
+    margin-bottom: 26px;
+    text-align: center;
+    scrollbar-color: $color_ligth-silver #fbfbfb;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: 20px;
+      background-color: $color_ligth-silver;
+      border-radius: 45px;
+    }
   }
 
   &__cities-data {
