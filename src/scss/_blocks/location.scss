@@ -32,7 +32,7 @@
 
   &__icon {
     fill: none;
-    stroke: #a7a7a7;
+    stroke: $color-bg_medium-light-gray;
     transition:
       background-color 0.4s ease-in-out,
       border-radius 0.4s ease-in-out;
@@ -99,6 +99,13 @@
 
   &__city {
     width: 100%;
+  }
+
+  &__region {
+    display: block;
+    font-size: 12px;
+    line-height: calc(20 / 12);
+    color: $color-text_gray;
   }
 
   &__bth-choise {

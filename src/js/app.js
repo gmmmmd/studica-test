@@ -59,7 +59,7 @@ const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
           dataRegions += createRegion(region.name);
           if (region.cities) {
             region.cities.forEach(city => {
-              dataRegions += createRegion(city.name);
+              dataRegions += createRegion(city.name, region.name);
             });
           }
         });
@@ -81,11 +81,12 @@ const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
     }
   };
 
-  function createRegion(region) {
+  function createRegion(city, region= '') {
     return`
     <li class="location__city">
       <button type="button" class="button location__bth-choise">
-        <span>${region}</span>
+        <span>${city}</span>
+        <span class="location__region">${region}</span>
       </button>
     </li>`
   };
