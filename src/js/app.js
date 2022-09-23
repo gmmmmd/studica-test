@@ -52,13 +52,13 @@ const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
         const response = await fetch('https://studika.ru/api/areas',{
           method: 'POST'
         });
-        const body = await response.json();
+        const data = await response.json();
         let dataRegions = '';
-        body.forEach(region => {
+
+        data.forEach(region => {
           dataRegions += createRegion(region.name);
           if (region.cities) {
             region.cities.forEach(city => {
-              console.log(city.name)
               dataRegions += createRegion(city.name);
             });
           }
@@ -84,7 +84,7 @@ const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
   function createRegion(region) {
     return`
     <li class="location__city">
-      <button type="button" class="button">
+      <button type="button" class="button location__bth-choise">
         <span>${region}</span>
       </button>
     </li>`

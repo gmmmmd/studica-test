@@ -75,12 +75,15 @@
     scrollbar-width: auto;
 
     &::-webkit-scrollbar {
-      width: 8px;
+      position: relative;
+      z-index: 2;
+      background-color: transparent;
+      width: 6px;
       height: 0;
     }
 
     &::-webkit-scrollbar-thumb {
-      height: 20px;
+      height: 32px;
       background-color: $color_ligth-silver;
       border-radius: 45px;
     }
@@ -95,7 +98,22 @@
   }
 
   &__city {
+    width: 100%;
+  }
+
+  &__bth-choise {
+    width: 100%;
     padding: 9px 23px 10px;
+    text-align: left;
+
+    &:hover,
+    &:focus-visible {
+      background-color: $color-bg_white-smoke;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__btn-apply {
@@ -109,6 +127,5 @@
     padding-bottom: 16px;
     letter-spacing: 2px;
     text-transform: uppercase;
-
   }
 }
