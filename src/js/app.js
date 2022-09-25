@@ -1,8 +1,8 @@
 window.addEventListener('DOMContentLoaded', function () {
   const body = document.querySelector('body');
 
-const toggleLocationCityForm = document.forms.locationSearchForm;
-const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
+  const toggleLocationCityForm = document.forms.locationSearchForm;
+  const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
 
   const preloader = document.querySelector('#loading');
 
@@ -17,9 +17,20 @@ const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
   })();
 
   (function getLocation() {
+    
+  
     const buttonLocationMenu = document.querySelector('.js-location__btn');
     const containerLocationMenu = document.querySelector('.js-location__search-container');
-    const cities = document.querySelector('.js-location__cities-data');
+
+    const citiesTemplate = document.querySelector('[data-cities-template]');
+    const citiesContainer = document.querySelector('[data-cities-container]');
+
+    const celectedContainer = document.querySelector('[data-celected-container]');
+
+
+
+    let dataCities = [];
+    let searchParams = [];
 
     if (buttonLocationMenu) {
       buttonLocationMenu.addEventListener('click', () => {
@@ -47,28 +58,62 @@ const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
       }
     });
 
+    toggleLocationCityForm.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase(); 
+      const cityBlock = document.querySelectorAll('.js-location__city');
+
+      cityBlock.forEach(item => {
+        if (item.textContent.toLowerCase().includes(query)) {
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+        }
+      });
+    });
+
+
+    const buttonChoiseLocation = document.querySelectorAll('.js-location__bth-choise');    
+    citiesContainer.addEventListener('click', (e) => {
+      
+
+      console.log(buttonChoiseLocation)
+      celectedContainer.classList.add('location__selected-cities--active');
+      searchParams.push(dataCities.find(city => city.name === e.target.textContent));
+      //console.log(searchParams)
+    });
+    
+
     async function getCities() {
       try {
         const response = await fetch('https://studika.ru/api/areas',{
           method: 'POST'
         });
+
         const data = await response.json();
-        let dataRegions = '';
 
         data.forEach(region => {
-          dataRegions += createRegion(region.name);
+          dataCities.push({name: region.name});
           if (region.cities) {
             region.cities.forEach(city => {
-              dataRegions += createRegion(city.name, region.name);
+              dataCities.push({name: city.name, region: region.name});
             });
           }
         });
-        cities.innerHTML = dataRegions;
+        
+        dataCities.map(i => {
+          const card = citiesTemplate.content.cloneNode(true).children[0];
+          const header = card.querySelector('[data-header]');
+          const body = card.querySelector('[data-body]');
+          header.textContent = i.name;          
+          body.textContent = i.region;
+          citiesContainer.append(card);
+        });
         closePreloader(preloader);
       } catch(err) {
         alert(err);
       }
     }
+    
   })();
 
   function openPreloader(preloader) {
@@ -79,15 +124,5 @@ const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
     if (preloader.style.display = "inline-flex") {
         preloader.style.display = "none";
     }
-  };
-
-  function createRegion(city, region= '') {
-    return`
-    <li class="location__city">
-      <button type="button" class="button location__bth-choise">
-        <span>${city}</span>
-        <span class="location__region">${region}</span>
-      </button>
-    </li>`
   };
 });

@@ -23,8 +23,17 @@
                 <input type="text" id="header_search-location" class="location-search-form__input" placeholder="Регион, город, населенный пункт">
               </label>
             </form>
+            <div class="location__selected-cities" data-celected-container></div>
             <div class="location__cities">
-              <ul class="location__cities-data js-location__cities-data">
+              <ul class="location__cities-data " data-cities-container>
+                <template data-cities-template>
+                  <li class="location__city js-location__city">
+                    <button type="button" class="button location__bth-choise js-location__bth-choise">
+                      <span data-header></span>
+                      <span class="location__region" data-body></span>
+                    </button>
+                  </li>
+                </template>
               </ul>
               {% include "templates/blocks/preloader.jinja" %}
             </div>
