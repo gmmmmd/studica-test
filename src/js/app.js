@@ -17,21 +17,21 @@ window.addEventListener('DOMContentLoaded', function () {
   })();
 
   (function getLocation() {
-    
-  
     const buttonLocationMenu = document.querySelector('.js-location__btn');
     const containerLocationMenu = document.querySelector('.js-location__search-container');
 
     const citiesTemplate = document.querySelector('[data-cities-template]');
     const citiesContainer = document.querySelector('[data-cities-container]');
 
+    const celectedTemplate = document.querySelector('[data-celected-template]');
     const celectedContainer = document.querySelector('[data-celected-container]');
 
-
+    const locationBtn = document.querySelector('.js-location__btn-apply');
 
     let dataCities = [];
     let searchParams = [];
 
+    //открытие окна
     if (buttonLocationMenu) {
       buttonLocationMenu.addEventListener('click', () => {
         containerLocationMenu.classList.toggle('location__search-container-open');
@@ -40,16 +40,19 @@ window.addEventListener('DOMContentLoaded', function () {
         if (containerLocationMenu.classList.contains('location__search-container-open')) {
           openPreloader(preloader);
           getCities();
+          locationBtn.disabled = true;
         }
       });
     };
 
+    //закрытые окна по кнопке esc
     window.addEventListener('keydown', (e) => {
       if(e.key === 'Escape') {
         containerLocationMenu.classList.remove('location__search-container-open');
       }
     });
 
+    //закрытие окна по клику вне его области
     document.addEventListener('click', (e) => {
       let target = e.target;
 
@@ -58,31 +61,62 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+    //фильтрация в окне
     toggleLocationCityForm.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase(); 
+      const query = e.target.value.toLowerCase();
       const cityBlock = document.querySelectorAll('.js-location__city');
 
       cityBlock.forEach(item => {
         if (item.textContent.toLowerCase().includes(query)) {
-          item.style.display = "block";
+          item.style.display = "flex";
         } else {
           item.style.display = "none";
         }
       });
     });
 
-
-    const buttonChoiseLocation = document.querySelectorAll('.js-location__bth-choise');    
+    //выбор города
     citiesContainer.addEventListener('click', (e) => {
-      
-
-      console.log(buttonChoiseLocation)
+      const btn = e.target.closest('.js-location__bth-choise');
+      //const removeBtn = e.target.closest('.js-location__close-svg');
+      //console.log(removeBtn)
       celectedContainer.classList.add('location__selected-cities--active');
-      searchParams.push(dataCities.find(city => city.name === e.target.textContent));
-      //console.log(searchParams)
-    });
-    
+  
 
+      if (btn) {
+        const btnContext = btn.querySelector('[data-header]');
+        //console.log(searchParams)
+        searchParams = dataCities.filter(i => {
+          return i === btnContext.textContent
+        });
+        searchParams.push(btnContext.textContent);
+        locationBtn.disabled = false;
+        console.log(searchParams)
+      }
+
+      searchParams.map(i => {
+        const card = celectedTemplate.content.cloneNode(true).children[0];
+        const celectedCity = card.querySelector('[data-selected-city]');
+        celectedCity.textContent = i;
+        celectedContainer.append(card);
+      })
+      console.log(searchParams)
+    });
+
+    //удаление города
+    celectedContainer.addEventListener('click', (e) => {
+      const removeBtn = e.target.closest('.js-location__close-svg');
+      if (removeBtn) {
+        const selectedContext = celectedTemplate.querySelector('[data-selected-city]');
+        // searchParams.filter(i => {
+        //   return i !== selectedContext.textContent
+        // });
+        console.log(searchParams);
+        console.log(selectedContext.textContent)
+      }
+    })
+
+    //запрос и отрисовка
     async function getCities() {
       try {
         const response = await fetch('https://studika.ru/api/areas',{
@@ -99,12 +133,12 @@ window.addEventListener('DOMContentLoaded', function () {
             });
           }
         });
-        
+
         dataCities.map(i => {
           const card = citiesTemplate.content.cloneNode(true).children[0];
           const header = card.querySelector('[data-header]');
           const body = card.querySelector('[data-body]');
-          header.textContent = i.name;          
+          header.textContent = i.name;
           body.textContent = i.region;
           citiesContainer.append(card);
         });
@@ -113,7 +147,7 @@ window.addEventListener('DOMContentLoaded', function () {
         alert(err);
       }
     }
-    
+
   })();
 
   function openPreloader(preloader) {

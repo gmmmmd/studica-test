@@ -23,7 +23,16 @@
                 <input type="text" id="header_search-location" class="location-search-form__input" placeholder="Регион, город, населенный пункт">
               </label>
             </form>
-            <div class="location__selected-cities" data-celected-container></div>
+            <div class="location__selected-cities" data-celected-container>
+              <template data-celected-template>
+                <div class="location__choise-selected">
+                  <span data-selected-city></span>
+                  <svg class="location__close-svg js-location__close-svg" width="14" height="14" viewBox="0 0 14 14">
+                    <use xlink:href="/img/svg.svg#close-icon" />
+                  </svg>
+                </div>
+              </template>
+            </div>
             <div class="location__cities">
               <ul class="location__cities-data " data-cities-container>
                 <template data-cities-template>
@@ -37,7 +46,7 @@
               </ul>
               {% include "templates/blocks/preloader.jinja" %}
             </div>
-            <button type="button" class="button location__btn-apply">
+            <button type="button" class="button location__btn-apply js-location__btn-apply">
             Сохранить
           </button>
           </div>
