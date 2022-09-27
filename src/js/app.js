@@ -4,7 +4,11 @@ window.addEventListener('DOMContentLoaded', function () {
   const toggleLocationCityForm = document.forms.locationSearchForm;
   const inputLocationCityForm = toggleLocationCityForm.querySelector('input');
 
+  const citiesTemplate = document.querySelector('[data-cities-template]');
+  const citiesContainer = document.querySelector('[data-cities-container]');
+
   const preloader = document.querySelector('#loading');
+  let dataCities = [];
 
   (function toggleMobileMenu() {
     const buttonBurgerMenu = document.querySelector('.js-header__burger');
@@ -16,20 +20,11 @@ window.addEventListener('DOMContentLoaded', function () {
     };
   })();
 
-  (function getLocation() {
+  (function tooglelocationPopup() {
     const buttonLocationMenu = document.querySelector('.js-location__btn');
     const containerLocationMenu = document.querySelector('.js-location__search-container');
 
-    const citiesTemplate = document.querySelector('[data-cities-template]');
-    const citiesContainer = document.querySelector('[data-cities-container]');
-
-    const celectedTemplate = document.querySelector('[data-celected-template]');
-    const celectedContainer = document.querySelector('[data-celected-container]');
-
     const locationBtn = document.querySelector('.js-location__btn-apply');
-
-    let dataCities = [];
-    let searchParams = [];
 
     //открытие окна
     if (buttonLocationMenu) {
@@ -38,12 +33,17 @@ window.addEventListener('DOMContentLoaded', function () {
         inputLocationCityForm.focus(); //хм, не работает фокус
 
         if (containerLocationMenu.classList.contains('location__search-container-open')) {
-          openPreloader(preloader);
-          getCities();
-          locationBtn.disabled = true;
+          if (dataCities.length === 0) {
+            openPreloader(preloader);
+            getCities(dataCities);
+            locationBtn.disabled = true;
+          }
         }
       });
     };
+
+    //Поиск
+    inputLocationCityForm.addEventListener('input', handleInput);
 
     //закрытые окна по кнопке esc
     window.addEventListener('keydown', (e) => {
@@ -61,94 +61,45 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    //фильтрация в окне
-    toggleLocationCityForm.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      const cityBlock = document.querySelectorAll('.js-location__city');
+  })();
 
-      cityBlock.forEach(item => {
-        if (item.textContent.toLowerCase().includes(query)) {
-          item.style.display = "flex";
-        } else {
-          item.style.display = "none";
+  async function getCities(obj) {
+    try {
+      const response = await fetch('https://studika.ru/api/areas',{
+        method: 'POST'
+      });
+
+      const data = await response.json();
+
+      data.forEach(region => {
+        obj.push({name: region.name, id: region.id});
+        if (region.cities) {
+          region.cities.forEach(city => {
+            obj.push({name: city.name, region: region.name, id: city.id});
+          });
         }
       });
-    });
 
-    //выбор города
-    citiesContainer.addEventListener('click', (e) => {
-      const btn = e.target.closest('.js-location__bth-choise');
-      //const removeBtn = e.target.closest('.js-location__close-svg');
-      //console.log(removeBtn)
-      celectedContainer.classList.add('location__selected-cities--active');
-  
+      createTemplate(obj);
 
-      if (btn) {
-        const btnContext = btn.querySelector('[data-header]');
-        //console.log(searchParams)
-        searchParams = dataCities.filter(i => {
-          return i === btnContext.textContent
-        });
-        searchParams.push(btnContext.textContent);
-        locationBtn.disabled = false;
-        console.log(searchParams)
-      }
-
-      searchParams.map(i => {
-        const card = celectedTemplate.content.cloneNode(true).children[0];
-        const celectedCity = card.querySelector('[data-selected-city]');
-        celectedCity.textContent = i;
-        celectedContainer.append(card);
-      })
-      console.log(searchParams)
-    });
-
-    //удаление города
-    celectedContainer.addEventListener('click', (e) => {
-      const removeBtn = e.target.closest('.js-location__close-svg');
-      if (removeBtn) {
-        const selectedContext = celectedTemplate.querySelector('[data-selected-city]');
-        // searchParams.filter(i => {
-        //   return i !== selectedContext.textContent
-        // });
-        console.log(searchParams);
-        console.log(selectedContext.textContent)
-      }
-    })
-
-    //запрос и отрисовка
-    async function getCities() {
-      try {
-        const response = await fetch('https://studika.ru/api/areas',{
-          method: 'POST'
-        });
-
-        const data = await response.json();
-
-        data.forEach(region => {
-          dataCities.push({name: region.name});
-          if (region.cities) {
-            region.cities.forEach(city => {
-              dataCities.push({name: city.name, region: region.name});
-            });
-          }
-        });
-
-        dataCities.map(i => {
-          const card = citiesTemplate.content.cloneNode(true).children[0];
-          const header = card.querySelector('[data-header]');
-          const body = card.querySelector('[data-body]');
-          header.textContent = i.name;
-          body.textContent = i.region;
-          citiesContainer.append(card);
-        });
-        closePreloader(preloader);
-      } catch(err) {
-        alert(err);
-      }
+      closePreloader(preloader);
+    } catch(err) {
+      alert(err);
     }
+  }
 
-  })();
+  function createTemplate(obj) {
+    obj.forEach(item => {
+      const card = citiesTemplate.content.cloneNode(true);
+      const name = card.querySelector('[data-name]');
+      const state = card.querySelector('[data-state]');
+      const cityId = card.querySelector('[data-id]');
+      name.textContent = item.name;
+      state.textContent = item.region;
+      cityId.dataset.id = item.id;
+      citiesContainer.appendChild(card);
+    })
+  }
 
   function openPreloader(preloader) {
     preloader.style.display = "inline-flex";
@@ -159,4 +110,24 @@ window.addEventListener('DOMContentLoaded', function () {
         preloader.style.display = "none";
     }
   };
+
+  function handleInput(e) {
+    let query = e.target.value.toLowerCase();
+    const btnClear = document.querySelector('.js-location-search-form__clear-svg');
+    let result = dataCities.filter(i => i.name.toLowerCase().includes(query));
+    citiesContainer.innerHTML = '';
+    createTemplate(result);
+
+    if (query) {
+      btnClear.classList.add('location-search-form__clear-svg--active');
+      btnClear.addEventListener('click', () => {
+        query = '';
+        inputLocationCityForm.value = ''
+        result = dataCities.filter(i => i.name.toLowerCase().includes(query));
+        citiesContainer.innerHTML = '';
+        createTemplate(result);
+      })
+    }
+  }
+
 });

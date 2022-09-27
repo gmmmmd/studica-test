@@ -22,6 +22,9 @@
               <label for="header_search-location">
                 <input type="text" id="header_search-location" class="location-search-form__input" placeholder="Регион, город, населенный пункт">
               </label>
+              <svg class="location-search-form__clear-svg js-location-search-form__clear-svg" width="14" height="14" viewBox="0 0 14 14">
+                <use xlink:href="/img/svg.svg#close-icon" />
+              </svg>
             </form>
             <div class="location__selected-cities" data-celected-container>
               <template data-celected-template>
@@ -36,10 +39,10 @@
             <div class="location__cities">
               <ul class="location__cities-data " data-cities-container>
                 <template data-cities-template>
-                  <li class="location__city js-location__city">
+                  <li class="location__city" data-id>
                     <button type="button" class="button location__bth-choise js-location__bth-choise">
-                      <span data-header></span>
-                      <span class="location__region" data-body></span>
+                      <span data-name></span>
+                      <span class="location__region" data-state></span>
                     </button>
                   </li>
                 </template>
