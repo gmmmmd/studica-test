@@ -50,36 +50,38 @@ window.addEventListener('DOMContentLoaded', function () {
     inputLocationCityForm.addEventListener('input', handleInput);
 
     //Выбор города
-
     citiesContainer.addEventListener('click', (e) => {
       const btn = e.target.closest('.js-location__bth-choise');
-      const card = celectedTemplate.content.cloneNode(true);
-      const celectedCity = card.querySelector('[data-selected-city]');
-      const cityId = card.querySelector('[data-id]');
-
-      let result = [];
 
       if (btn) {
         celectedContainer.classList.add('location__selected-cities--active');
         const btnContext = btn.querySelector('[data-name]');
 
-        result = dataCities.filter((item, index) => {
+        dataCities.filter((item) => {
           if (item.name === btnContext.textContent) {
+
             if (searchParams.includes(item)) {
               let index = searchParams.indexOf(item);
-              return searchParams.splice(index, 1);
+              searchParams.splice(index, 1);
+              return searchParams
             }
-            return searchParams.push(item);
+            searchParams.push(item);
+            return searchParams
           }
         });
-        console.log(result)
+        if (searchParams.length === 0) {
+          celectedContainer.classList.remove('location__selected-cities--active');
+        }
+        celectedContainer.innerHTML = '';
 
-        result.map(i => {
-          if (searchParams.includes(i)) {
-            celectedCity.textContent = i.name;
-            cityId.dataset.id = i.id;
-            celectedContainer.appendChild(card);
-          }
+        searchParams.map((i) => {
+          const card = celectedTemplate.content.cloneNode(true);
+          const celectedCity = card.querySelector('[data-selected-city]');
+          const cityId = card.querySelector('[data-id]');
+
+          celectedCity.textContent = i.name;
+          cityId.dataset.id = i.id;
+          celectedContainer.appendChild(card);
         });
 
         locationBtn.disabled = false;
