@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const containerLocationMenu = document.querySelector('.js-location__search-container');
 
     const locationBtn = document.querySelector('.js-location__btn-apply');
-    const choiseBtn = document.querySelectorAll('.js-location__bth-choise');
+
     //открытие окна
     if (buttonLocationMenu) {
       buttonLocationMenu.addEventListener('click', () => {
@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //Выбор города
     citiesContainer.addEventListener('click', (e) => {
-      const btn = e.target.closest('.js-location__bth-choise');
+      const btn = e.target.closest('.js-location__bth-choise');      
 
       if (btn) {
         celectedContainer.classList.add('location__selected-cities--active');
@@ -59,36 +59,42 @@ window.addEventListener('DOMContentLoaded', function () {
 
         dataCities.filter((item) => {
           if (item.name === btnContext.textContent) {
-
             if (searchParams.includes(item)) {
               let index = searchParams.indexOf(item);
               searchParams.splice(index, 1);
-              return searchParams
+              return searchParams;
             }
             searchParams.push(item);
-            return searchParams
+            return searchParams;
           }
         });
+
         if (searchParams.length === 0) {
           celectedContainer.classList.remove('location__selected-cities--active');
         }
-        celectedContainer.innerHTML = '';
 
-        searchParams.map((i) => {
-          const card = celectedTemplate.content.cloneNode(true);
-          const celectedCity = card.querySelector('[data-selected-city]');
-          const cityId = card.querySelector('[data-id]');
-
-          celectedCity.textContent = i.name;
-          cityId.dataset.id = i.id;
-          celectedContainer.appendChild(card);
-        });
+        createBadge(searchParams);
 
         locationBtn.disabled = false;
-        console.log('searchParams', searchParams)
       }
+    });
 
-    })
+    //Удаление города
+    celectedContainer.addEventListener('click', (e) => {
+      const btnClearChoise = e.target.closest('[data-id]');
+
+      if (btnClearChoise) {
+        searchParams = searchParams.filter(i => {
+          return i.id != btnClearChoise.dataset.id
+        });
+        
+        if (searchParams.length === 0) {
+          celectedContainer.classList.remove('location__selected-cities--active');
+        }
+
+        createBadge(searchParams);
+      }
+    });
 
     //закрытые окна по кнопке esc
     window.addEventListener('keydown', (e) => {
@@ -101,7 +107,7 @@ window.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', (e) => {
       let target = e.target;
 
-      if (!target.closest('.js-location__btn') && !target.closest('.js-location__search-container')) {
+      if (!target.closest('.js-location__btn') && !target.closest('.js-location__search-container') && !target.closest('.js-location__choise-selected')) {
         containerLocationMenu.classList.remove('location__search-container-open');
       }
     });
@@ -129,7 +135,7 @@ window.addEventListener('DOMContentLoaded', function () {
     } catch(err) {
       alert(err);
     }
-  }
+  };
 
   function createTemplate(obj) {
     obj.forEach(item => {
@@ -142,7 +148,21 @@ window.addEventListener('DOMContentLoaded', function () {
       cityId.dataset.id = item.id;
       citiesContainer.appendChild(card);
     })
-  }
+  };
+
+  function createBadge(obj) {
+    celectedContainer.innerHTML = '';
+
+    obj.map((i) => {
+      const card = celectedTemplate.content.cloneNode(true);
+      const celectedCity = card.querySelector('[data-selected-city]');
+      const cityId = card.querySelector('[data-id]');
+
+      celectedCity.textContent = i.name;
+      cityId.dataset.id = i.id;
+      celectedContainer.appendChild(card);
+    });
+  };
 
   function openPreloader(preloader) {
     preloader.style.display = "inline-flex";
@@ -169,8 +189,9 @@ window.addEventListener('DOMContentLoaded', function () {
         result = dataCities.filter(i => i.name.toLowerCase().includes(query));
         citiesContainer.innerHTML = '';
         createTemplate(result);
+        btnClear.classList.remove('location-search-form__clear-svg--active');
       })
     }
-  }
+  };
 
 });
