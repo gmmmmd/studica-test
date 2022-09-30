@@ -112,6 +112,21 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+    //Применение параметров
+    locationBtn.addEventListener('click', () => {
+      const locationValue = document.querySelector('[data-value]');
+
+      locationValue.innerHTML = searchParams.map( i => {
+        return createLocationItem(i.id, i.name);
+      });
+
+      if (locationValue.innerHTML === '') {
+        locationValue.innerHTML = 'Любой регион'
+      }
+
+      containerLocationMenu.classList.remove('location__search-container-open');
+    });
+
   })();
 
   async function getCities(obj) {
@@ -162,6 +177,12 @@ window.addEventListener('DOMContentLoaded', function () {
       cityId.dataset.id = i.id;
       celectedContainer.appendChild(card);
     });
+  };
+
+  function createLocationItem(id, name) {
+    return `
+      <span data-id=${id}>${name}</span>
+    `
   };
 
   function openPreloader(preloader) {
