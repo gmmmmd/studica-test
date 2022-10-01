@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const preloader = document.querySelector('#loading');
   let dataCities = [];
   let searchParams = [];
-
+  
   (function toggleMobileMenu() {
     const buttonBurgerMenu = document.querySelector('.js-header__burger');
 
@@ -34,7 +34,6 @@ window.addEventListener('DOMContentLoaded', function () {
     if (buttonLocationMenu) {
       buttonLocationMenu.addEventListener('click', () => {
         containerLocationMenu.classList.toggle('location__search-container-open');
-        inputLocationCityForm.focus(); //хм, не работает фокус
 
         if (containerLocationMenu.classList.contains('location__search-container-open')) {
           if (dataCities.length === 0) {
@@ -82,8 +81,9 @@ window.addEventListener('DOMContentLoaded', function () {
     //Удаление города
     celectedContainer.addEventListener('click', (e) => {
       const btnClearChoise = e.target.closest('[data-id]');
+      const btnRemove = e.target.closest('[data-btn]')
 
-      if (btnClearChoise) {
+      if (btnRemove) {
         searchParams = searchParams.filter(i => {
           return i.id != btnClearChoise.dataset.id
         });
@@ -125,9 +125,23 @@ window.addEventListener('DOMContentLoaded', function () {
       }
 
       containerLocationMenu.classList.remove('location__search-container-open');
+      
+      document.cookie = `cities=${JSON.stringify(searchParams)}`;
+      sendCities(searchParams);
     });
 
   })();
+
+  async function sendCities(data) {
+    try {
+      await fetch('https://studika.ru/api/areas',{
+        method: 'POST',
+        body: JSON.stringify(data)
+      }).then(res => console.log(res));
+    } catch(err) {
+      alert(err);
+    }
+  };
 
   async function getCities(obj) {
     try {
