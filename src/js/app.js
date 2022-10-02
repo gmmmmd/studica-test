@@ -13,6 +13,12 @@ window.addEventListener('DOMContentLoaded', function () {
   const preloader = document.querySelector('#loading');
   let dataCities = [];
   let searchParams = [];
+  const isAgeConfirmed = localStorage.getItem('cities');
+
+  if (isAgeConfirmed) {
+    searchParams = JSON.parse(isAgeConfirmed);
+    toggleValueChoiseCities(searchParams)
+  }
   
   (function toggleMobileMenu() {
     const buttonBurgerMenu = document.querySelector('.js-header__burger');
@@ -34,6 +40,7 @@ window.addEventListener('DOMContentLoaded', function () {
     if (buttonLocationMenu) {
       buttonLocationMenu.addEventListener('click', () => {
         containerLocationMenu.classList.toggle('location__search-container-open');
+        locationBtn.disabled = true;
 
         if (containerLocationMenu.classList.contains('location__search-container-open')) {
           if (dataCities.length === 0) {
@@ -42,6 +49,12 @@ window.addEventListener('DOMContentLoaded', function () {
             locationBtn.disabled = true;
           }
         }
+        
+        if (searchParams.length !== 0) {
+          celectedContainer.classList.add('location__selected-cities--active');
+          createBadge(searchParams);
+          locationBtn.disabled = false;          
+        }  
       });
     };
 
@@ -50,23 +63,41 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //Выбор города
     citiesContainer.addEventListener('click', (e) => {
-      const btn = e.target.closest('.js-location__bth-choise');      
+      const btn = e.target.closest('.js-location__bth-choise');
 
       if (btn) {
         celectedContainer.classList.add('location__selected-cities--active');
         const btnContext = btn.querySelector('[data-name]');
 
-        dataCities.filter((item) => {
-          if (item.name === btnContext.textContent) {
-            if (searchParams.includes(item)) {
+        const we = searchParams.filter(i => {
+          return i.name.includes(btnContext.textContent)
+        })
+        
+        if (we.length !== 0) {
+          searchParams.forEach(item => {
+            if (item.name === btnContext.textContent) {
               let index = searchParams.indexOf(item);
               searchParams.splice(index, 1);
               return searchParams;
             }
-            searchParams.push(item);
             return searchParams;
-          }
-        });
+          });
+        } else {
+          dataCities.filter((item) => {
+            if (item.name === btnContext.textContent) {
+              if (searchParams.includes(item)) {
+                let index = searchParams.indexOf(item);
+                searchParams.splice(index, 1);
+                console.log(searchParams)
+                return searchParams;
+              } else {
+                searchParams.push(item);
+                console.log(searchParams)
+                return searchParams;
+              }
+            }
+          });
+        }
 
         if (searchParams.length === 0) {
           celectedContainer.classList.remove('location__selected-cities--active');
@@ -114,23 +145,27 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //Применение параметров
     locationBtn.addEventListener('click', () => {
-      const locationValue = document.querySelector('[data-value]');
-
-      locationValue.innerHTML = searchParams.map( i => {
-        return createLocationItem(i.id, i.name);
-      });
-
-      if (locationValue.innerHTML === '') {
-        locationValue.innerHTML = 'Любой регион'
-      }
+      toggleValueChoiseCities(searchParams)
 
       containerLocationMenu.classList.remove('location__search-container-open');
-      
+      localStorage.setItem('cities', JSON.stringify(searchParams))
       document.cookie = `cities=${JSON.stringify(searchParams)}`;
       sendCities(searchParams);
     });
 
   })();
+
+  function toggleValueChoiseCities(obj) {
+    const locationValue = document.querySelector('[data-value]');
+
+    locationValue.innerHTML = searchParams.map( i => {
+      return createLocationItem(i.id, i.name);
+    });
+
+    if (locationValue.innerHTML === '') {
+      locationValue.innerHTML = 'Любой регион'
+    }
+  }
 
   async function sendCities(data) {
     try {
